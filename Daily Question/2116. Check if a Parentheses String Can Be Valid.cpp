@@ -1,16 +1,33 @@
 class Solution {
 public:
     bool canBeValid(string s, string locked) {
-    auto validate = [&](char op) {
-        int bal = 0, wild = 0, sz = s.size();
-        int start = op == '(' ? 0 : sz - 1, dir = op == '(' ? 1 : - 1;
-        for (int i = start; i >= 0 && i < sz && wild + bal >= 0; i += dir)
-            if (locked[i] == '1')
-                bal += s[i] == op ? 1 : -1;
-            else
-                ++wild;
-        return abs(bal) <= wild;
-    };
-    return s.size() % 2 == 0 && validate('(') && validate(')');
-}
+        int n = s.length();
+        if(n%2 == 1) return false;
+        int cntC = 0;
+        int cntD = 0;
+        for(int i = 0; i<n; i++){
+            if(s[i] == '(' || locked[i] == '0'){
+                cntC++;
+            }
+            else{
+                cntC--;
+            }
+            if(cntC < 0){
+                return false;
+            }
+        }
+
+        for(int i = n-1;i>=0; i--){
+            if(s[i] == ')' || locked[i] == '0'){
+                cntD++;
+            }
+            else{
+                cntD--;
+            }
+            if(cntD< 0){
+                return false;
+            }
+        }
+        return true;
+    }
 };
